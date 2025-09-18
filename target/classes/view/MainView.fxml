@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="controller.GameController">
+    <top>
+        <HBox spacing="10" alignment="CENTER_RIGHT">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            <children>
+                <Label text="Tiempo:"/>
+                <Label fx:id="lblTimer" text="20" styleClass="timer-label"/>
+            </children>
+        </HBox>
+    </top>
+
+    <center>
+        <VBox fx:id="centerBox" spacing="12.0" alignment="CENTER" prefWidth="900">
+            <children>
+                <Label fx:id="lblLevel" text="Nivel: 1" styleClass="title-label"/>
+
+                <Label fx:id="lblWord"
+                       text="Palabra"
+                       styleClass="word-label"
+                       wrapText="true"
+                       maxWidth="800"
+                       prefWidth="800"
+                       alignment="CENTER"
+                       textAlignment="CENTER"/>
+
+                <TextField fx:id="txtInput"
+                           promptText="Escribe aquí exactamente la palabra mostrada"
+                           maxWidth="600"/>
+
+                <HBox spacing="10" alignment="CENTER">
+                    <children>
+                        <Button fx:id="btnValidate" text="Validar" onAction="#onValidateAction"/>
+                        <Button fx:id="btnRestart" text="Reiniciar" onAction="#onRestartAction"/>
+                    </children>
+                </HBox>
+
+                <Label fx:id="lblMessage" text="" styleClass="message-label"/>
+                <ProgressBar fx:id="progress" prefWidth="400"/>
+            </children>
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+        </VBox>
+    </center>
+</BorderPane>

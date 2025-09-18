@@ -1,0 +1,4 @@
+D:\Usuarios\Covax\Documents\Uni\POE\EscrituraRapida_Final\src\main\java\app\Main.java
+D:\Usuarios\Covax\Documents\Uni\POE\EscrituraRapida_Final\src\main\java\controller\GameController.java
+D:\Usuarios\Covax\Documents\Uni\POE\EscrituraRapida_Final\src\main\java\model\Game.java
+D:\Usuarios\Covax\Documents\Uni\POE\EscrituraRapida_Final\src\main\java\model\WordGenerator.java
