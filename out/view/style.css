@@ -1,17 +1,23 @@
+/* 
+ Global style for the Fast Typing Game.
+ Defines fonts, colors, padding, and UI component styles.
+*/
+
+/* Root container style */
 .root {
     -fx-font-family: 'Segoe UI', Arial;
     -fx-padding: 10;
     -fx-background-color: linear-gradient(to bottom, #e0f7fa, #ffffff);
 }
 
-/* Título nivel */
+/* Title label: displays the current level */
 .title-label {
     -fx-font-size: 20px;
     -fx-font-weight: bold;
     -fx-text-fill: #1565c0;
 }
 
-/* Palabra a escribir */
+/* Word label: displays the word to be typed */
 .word-label {
     -fx-font-size: 28px;
     -fx-font-weight: bold;
@@ -19,21 +25,21 @@
     -fx-text-alignment: center;
 }
 
-/* Temporizador */
+/* Timer label: shows remaining time */
 .timer-label {
     -fx-font-size: 16px;
     -fx-font-weight: bold;
     -fx-text-fill: #d32f2f;
 }
 
-/* Mensajes de éxito/error */
+/* Message label: displays success/error feedback */
 .message-label {
     -fx-font-size: 16px;
     -fx-font-weight: bold;
     -fx-text-fill: #00897b;
 }
 
-/* Botones */
+/* Buttons: primary action buttons (Validate / Restart) */
 .button {
     -fx-background-color: linear-gradient(to bottom, #42a5f5, #1e88e5);
     -fx-text-fill: white;
@@ -42,11 +48,13 @@
     -fx-padding: 8 16;
     -fx-cursor: hand;
 }
+
+/* Hover effect for buttons */
 .button:hover {
     -fx-background-color: linear-gradient(to bottom, #66bb6a, #43a047);
 }
 
-/* Campo de texto */
+/* Text field: player input area */
 .text-field {
     -fx-background-color: #ffffff;
     -fx-border-color: #1e88e5;
@@ -56,7 +64,7 @@
     -fx-font-size: 14px;
 }
 
-/* Barra de progreso */
+/* Progress bar: visual indicator of remaining time */
 .progress-bar {
     -fx-accent: #1e88e5;
     -fx-background-radius: 6px;
