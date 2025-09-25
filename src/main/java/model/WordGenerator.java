@@ -5,22 +5,45 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Clase que genera palabras o frases aleatorias para el juego.
- * Incluye una mezcla grande de frases en español y referencias de cultura pop.
+ * WordGenerator class.
+ * <p>
+ * This class provides random words or phrases for the Fast Typing Game.
+ * It contains a large collection of sentences in Spanish, popular sayings,
+ * pop culture references, tongue twisters, and pangrams.
+ * </p>
+ *
+ * <p><b>Main responsibilities:</b></p>
+ * <ul>
+ *   <li>Store a predefined list of words and phrases</li>
+ *   <li>Return a random word/phrase each time it is requested</li>
+ * </ul>
+ *
+ * @author Lina Vanessa Cosme Arce - 2436459
+ * @version 1.8
  */
 public class WordGenerator {
 
-    private final List<String> words; // Lista de palabras/frases disponibles
-    private final Random random; // Generador aleatorio
+    private final List<String> words; // List of available words/phrases
+    private final Random random;      // Random generator
 
     /**
-     * Constructor: inicializa el listado de palabras/frases.
+     * Constructs a new WordGenerator.
+     * <p>
+     * Initializes the list of words and phrases, which includes:
+     * <ul>
+     *   <li>Common expressions and colloquial phrases</li>
+     *   <li>Popular sayings (refranes)</li>
+     *   <li>Pop culture references in Spanish and English</li>
+     *   <li>Tongue twisters and pangrams</li>
+     *   <li>Longer descriptive sentences</li>
+     * </ul>
+     * </p>
      */
     public WordGenerator() {
         words = new ArrayList<>();
         random = new Random();
 
-        // --- Frases normales y coloquiales ---
+        // --- Common and colloquial phrases ---
         words.add("El perro corre rápido");
         words.add("Hoy hace mucho calor en Cali");
         words.add("Me gusta el chocolate con pan");
@@ -33,7 +56,7 @@ public class WordGenerator {
         words.add("Se armó la gorda en la fiesta");
         words.add("Me salió más caro el caldo que los huevos");
 
-        // --- Refranes ---
+        // --- Popular sayings ---
         words.add("Más vale tarde que nunca");
         words.add("Camarón que se duerme se lo lleva la corriente");
         words.add("El que madruga Dios lo ayuda");
@@ -42,7 +65,7 @@ public class WordGenerator {
         words.add("Ojos que no ven corazón que no siente");
         words.add("Cría cuervos y te sacarán los ojos");
 
-        // --- Cultura pop (mezcla en español e inglés) ---
+        // --- Pop culture references ---
         words.add("Que la fuerza te acompañe");
         words.add("No me quiero ir señor Stark");
         words.add("Hakuna Matata");
@@ -63,7 +86,7 @@ public class WordGenerator {
         words.add("One does not simply walk into Mordor");
         words.add("Shrek es amor, Shrek es vida.");
 
-        // --- Trabalenguas y pangramas ---
+        // --- Tongue twisters and pangrams ---
         words.add("Tres tristes tigres tragaban trigo en un trigal");
         words.add("El veloz murciélago hindú comía feliz cardillo y kiwi");
         words.add("La cigüeña tocaba el saxofón detrás del palenque de paja");
@@ -72,7 +95,7 @@ public class WordGenerator {
         words.add("Sphinx of black quartz, judge my vow");
         words.add("The quick brown fox jumps over the lazy dog");
 
-        // --- Frases largas descriptivas ---
+        // --- Longer descriptive sentences ---
         words.add("En una pequeña aldea todos se conocían y compartían historias");
         words.add("La biblioteca estaba llena de libros antiguos y aroma a papel viejo");
         words.add("El trayecto hacia la cumbre fue duro pero la vista valió la pena");
@@ -80,7 +103,9 @@ public class WordGenerator {
     }
 
     /**
-     * Devuelve una palabra o frase aleatoria.
+     * Returns a random word or phrase from the list.
+     *
+     * @return a randomly selected word or phrase
      */
     public String getRandomWord() {
         int index = random.nextInt(words.size());
