@@ -1,18 +1,4 @@
-/* 
- Global style for the Fast Typing Game.
- Defines fonts, colors, padding, and UI component styles.
-*/
-
-/* Root container style */
-.root {
-    -fx-font-family: 'Segoe UI', Arial;
-    -fx-padding: 10;
-    -fx-background-color: linear-gradient(to bottom, #e0f7fa, #ffffff);
-}
-
-/* Title label: displays the current level */
-.title-label {
-    -fx-font-size: 20px;
+t-size: 20px;
     -fx-font-weight: bold;
     -fx-text-fill: #1565c0;
 }
