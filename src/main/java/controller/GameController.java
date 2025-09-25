@@ -12,61 +12,78 @@ import model.Game;
 import model.WordGenerator;
 
 /**
- * Controlador principal del juego Escritura Rápida
- * Se encarga de manejar la interfaz (FXML), el temporizador y la lógica de validación
+ * GameController class.
+ * <p>
+ * This is the main controller for the Fast Typing Game. It manages the
+ * user interface (FXML), the game timer, level progression, and word
+ * validation logic. It connects the model ({@link Game} and {@link WordGenerator})
+ * with the UI components.
+ * </p>
  *
- * Cambios realizados:
- * - Al fallar, el jugador permanece en el mismo nivel y se le genera una nueva palabra
- * - Los botones en FXML llaman a los métodos onValidateAction y onRestartAction
- * - Se vincula el ancho del lblWord al ancho del contenedor central (centerBox)
- *   para que texto largo haga wrap correctamente
- * - Se usa .trim() al validar para ignorar espacios accidentales al inicio/fin
+ * <p><b>Main responsibilities:</b></p>
+ * <ul>
+ *   <li>Load new words for each level</li>
+ *   <li>Start and update the timer</li>
+ *   <li>Validate player input against the target word</li>
+ *   <li>Handle success/failure feedback messages</li>
+ *   <li>Restart the game when required</li>
+ * </ul>
+ *
+ * @author Lina Vanessa Cosme Arce - 2436459
+ * @version 1.8
  */
 public class GameController {
 
-    @FXML private Label lblWord; // Muestra la palabra/frase actual
-    @FXML private Label lblLevel; // Muestra el nivel actual
-    @FXML private Label lblTimer; // Muestra el tiempo restante
-    @FXML private Label lblMessage; // Muestra mensajes de éxito o error
-    @FXML private TextField txtInput; // Campo donde escribe el jugador
-    @FXML private Button btnValidate; // Botón de validación
-    @FXML private Button btnRestart; // Botón de reinicio
-    @FXML private ProgressBar progress; // Barra de progreso del tiempo
-    @FXML private VBox centerBox; // contenedor central, usado para binding de ancho
+    @FXML private Label lblWord;     // Displays the current word/phrase
+    @FXML private Label lblLevel;    // Displays the current level
+    @FXML private Label lblTimer;    // Displays remaining time
+    @FXML private Label lblMessage;  // Displays success or error messages
+    @FXML private TextField txtInput; // Input field for the player
+    @FXML private Button btnValidate; // Button to validate input
+    @FXML private Button btnRestart;  // Button to restart the game
+    @FXML private ProgressBar progress; // Shows remaining time visually
+    @FXML private VBox centerBox;      // Container for binding word label width
 
-    private Game game; // Modelo que guarda el estado del juego
-    private Timeline timeline; // Temporizador
-    private int timeLeft; // Tiempo restante en segundos
-    private WordGenerator generator; // Generador de palabras/frases
+    private Game game;                // Model that tracks game state
+    private Timeline timeline;        // Timer for countdown
+    private int timeLeft;             // Remaining time in seconds
+    private WordGenerator generator;  // Word/phrase generator
 
+    /**
+     * Initializes the controller after the FXML has been loaded.
+     * <p>
+     * Sets up the game model, prepares the word generator, binds UI events
+     * (like pressing Enter to validate), and loads the first word of the game.
+     * </p>
+     */
     @FXML
     public void initialize() {
-        // Inicializamos modelo y generador
         game = new Game();
         generator = new WordGenerator();
 
-        // Aseguramos que Enter valide
+        // Enter key validates input
         txtInput.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) {
                 onValidateAction();
             }
         });
 
-        // Vinculaciones visuales que deben ejecutarse cuando la escena esté lista
+        // Bind word label width to container width for proper text wrapping
         Platform.runLater(() -> {
-            // Bind: lblWord usa el ancho del centerBox menos margen para realizar wrap
             if (centerBox != null) {
                 lblWord.maxWidthProperty().bind(centerBox.widthProperty().subtract(40));
                 lblWord.setWrapText(true);
             }
         });
 
-        // Arrancamos el primer nivel
         loadNewWord();
     }
 
     /**
-     * Método llamado desde FXML (onAction) para el botón Validar
+     * Handles the action of the "Validate" button from FXML.
+     * <p>
+     * Delegates the logic to {@link #validateInput()}.
+     * </p>
      */
     @FXML
     public void onValidateAction() {
@@ -74,7 +91,10 @@ public class GameController {
     }
 
     /**
-     * Método llamado desde FXML (onAction) para el botón Reiniciar
+     * Handles the action of the "Restart" button from FXML.
+     * <p>
+     * Delegates the logic to {@link #resetGame()}.
+     * </p>
      */
     @FXML
     public void onRestartAction() {
@@ -82,18 +102,27 @@ public class GameController {
     }
 
     /**
-     * Carga una nueva palabra/frase y reinicia el temporizador
+     * Loads a new word/phrase into the UI and resets the timer.
+     * <p>
+     * Clears the input field, displays a new random word,
+     * updates the level label, and starts the countdown timer.
+     * </p>
      */
     private void loadNewWord() {
         txtInput.clear();
-        txtInput.setDisable(false); // habilitar campo en caso de que estuviera deshabilitado
+        txtInput.setDisable(false);
         lblWord.setText(generator.getRandomWord());
-        lblLevel.setText("Nivel: " + game.getLevel());
+        lblLevel.setText("Level: " + game.getLevel());
         startTimer();
     }
 
     /**
-     * Inicia el temporizador para el nivel actual
+     * Starts the countdown timer for the current level.
+     * <p>
+     * Updates the timer label and progress bar every second.
+     * When time runs out, triggers automatic validation
+     * via {@link #autoValidateOnTimeout()}.
+     * </p>
      */
     private void startTimer() {
         if (timeline != null) {
@@ -107,7 +136,6 @@ public class GameController {
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
             timeLeft--;
             lblTimer.setText(String.valueOf(timeLeft));
-            // evitar division por cero
             progress.setProgress((double) Math.max(timeLeft, 0) / Math.max(game.getTimeForLevel(), 1));
 
             if (timeLeft <= 0) {
@@ -120,55 +148,57 @@ public class GameController {
     }
 
     /**
-     * Valida la entrada del jugador (botón o ENTER).
-     * Si es correcto -> subir nivel.
-     * Si es incorrecto -> se mantiene en el mismo nivel (no termina la partida),
-     *                     se resetea racha consecutiva y se genera otra palabra.
+     * Validates the player's input against the displayed word.
+     * <p>
+     * If correct, shows a success message, increases the level,
+     * and loads a new word. If incorrect, resets consecutive streak,
+     * shows an error message, and loads another word at the same level.
+     * </p>
      */
     private void validateInput() {
         if (timeline != null) timeline.stop();
 
-        // Ignoramos espacios al inicio/fin con trim()
         String userText = txtInput.getText() == null ? "" : txtInput.getText().trim();
         String targetWord = lblWord.getText();
 
         if (userText.equals(targetWord)) {
-            showMessage("¡Correcto! Nivel superado.", "success");
-            game.nextLevel(); // avanza nivel y potencia dificultad cuando corresponde
+            showMessage("Correct! Level up.", "success");
+            game.nextLevel();
             loadNewWord();
         } else {
-            // fallo: mantener nivel, resetear racha de aciertos consecutivos
             game.resetConsecutive();
-            showMessage("Incorrecto. Mantienes el mismo nivel, inténtalo de nuevo.", "error");
-            // Cargar otra palabra en el mismo nivel
+            showMessage("Incorrect. You stay at the same level, try again.", "error");
             loadNewWord();
         }
     }
 
     /**
-     * Valida automáticamente cuando el tiempo llega a 0.
-     * Si es correcto -> subir nivel.
-     * Si es incorrecto o vacío -> mantener nivel y otra palabra.
+     * Validates automatically when the timer reaches zero.
+     * <p>
+     * If the input matches the target word, the player levels up.
+     * Otherwise, the level remains the same and a new word is shown.
+     * </p>
      */
     private void autoValidateOnTimeout() {
         String userText = txtInput.getText() == null ? "" : txtInput.getText().trim();
         String targetWord = lblWord.getText();
 
         if (userText.equals(targetWord)) {
-            showMessage("¡Correcto en el último segundo! Nivel superado.", "success");
+            showMessage("Correct at the last second! Level up.", "success");
             game.nextLevel();
         } else {
             game.resetConsecutive();
-            showMessage("Tiempo agotado. Mantienes el mismo nivel.", "error");
+            showMessage("Time is up. You stay at the same level.", "error");
         }
         loadNewWord();
     }
 
     /**
-     * Muestra un mensaje visual al jugador.
+     * Displays a visual message to the player.
      *
-     * @param msg  Texto a mostrar
-     * @param type Tipo de mensaje ("success" o "error")
+     * @param msg  the message text to display
+     * @param type the type of message ("success" or "error"),
+     *             used to determine styling
      */
     private void showMessage(String msg, String type) {
         lblMessage.setText(msg);
@@ -180,7 +210,11 @@ public class GameController {
     }
 
     /**
-     * Reinicia el juego desde nivel 1.
+     * Resets the game to level 1.
+     * <p>
+     * Stops the timer, clears messages, resets the game model,
+     * and loads a new word for the first level.
+     * </p>
      */
     private void resetGame() {
         if (timeline != null) timeline.stop();
