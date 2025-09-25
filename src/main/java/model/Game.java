@@ -1,41 +1,67 @@
 package model;
 
 /**
- * Clase que maneja el estado del juego:
- * nivel actual, número de aciertos consecutivos y tiempo por nivel.
+ * Game class.
+ * <p>
+ * This class manages the state of the Fast Typing Game, including
+ * the current level, the number of consecutive correct answers, and
+ * the available time per level.
+ * </p>
+ *
+ * <p><b>Main responsibilities:</b></p>
+ * <ul>
+ *   <li>Track the player's level progression</li>
+ *   <li>Adjust the time per level as difficulty increases</li>
+ *   <li>Reset the game state when needed</li>
+ *   <li>Manage the streak of consecutive correct answers</li>
+ * </ul>
+ *
+ * @author Lina Vanessa Cosme Arce - 2436459
+ * @version 1.8
  */
 public class Game {
 
-    private int level;              // Nivel actual del jugador
-    private int consecutiveCorrect; // Número de respuestas correctas consecutivas
-    private int timePerLevel;       // Tiempo asignado a cada nivel en segundos
+    private int level;              // Current player level
+    private int consecutiveCorrect; // Number of consecutive correct answers
+    private int timePerLevel;       // Time allowed per level in seconds
 
     /**
-     * Constructor: arranca un nuevo juego en nivel 1 con 20 segundos.
+     * Constructs a new game starting at level 1 with 20 seconds.
+     * <p>
+     * Calls {@link #reset()} to initialize values.
+     * </p>
      */
     public Game() {
         reset();
     }
 
     /**
-     * Reinicia el juego a sus valores iniciales.
+     * Resets the game to its initial values.
+     * <p>
+     * Sets the level to 1, consecutive streak to 0,
+     * and time per level back to 20 seconds.
+     * </p>
      */
     public void reset() {
         level = 1;
         consecutiveCorrect = 0;
-        timePerLevel = 20; // Tiempo inicial
+        timePerLevel = 20;
     }
 
     /**
-     * Avanza al siguiente nivel después de un acierto.
-     * Cada 5 niveles reduce el tiempo en 2 segundos (mínimo 2 segundos).
+     * Advances to the next level after a correct answer.
+     * <p>
+     * Increases the level and consecutive correct counter.
+     * Every 5 consecutive correct answers, reduces the time per level
+     * by 2 seconds until a minimum of 2 seconds is reached.
+     * </p>
      */
     public void nextLevel() {
         level++;
         consecutiveCorrect++;
 
         if (consecutiveCorrect % 5 == 0 && timePerLevel > 2) {
-            timePerLevel -= 2; // Aumenta la dificultad
+            timePerLevel -= 2;
             if (timePerLevel < 2) {
                 timePerLevel = 2;
             }
@@ -43,21 +69,28 @@ public class Game {
     }
 
     /**
-     * Resetea la racha de aciertos consecutivos (se usa al fallar).
+     * Resets the consecutive correct answers counter.
+     * <p>
+     * Used when the player fails a word.
+     * </p>
      */
     public void resetConsecutive() {
         consecutiveCorrect = 0;
     }
 
     /**
-     * Devuelve el nivel actual.
+     * Gets the current player level.
+     *
+     * @return the current level
      */
     public int getLevel() {
         return level;
     }
 
     /**
-     * Devuelve el tiempo por nivel en segundos.
+     * Gets the allowed time for the current level.
+     *
+     * @return the time per level in seconds
      */
     public int getTimeForLevel() {
         return timePerLevel;
