@@ -3,7 +3,17 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<!-- 
+ MainView.fxml
+ This file defines the main user interface for the Fast Typing Game.
+ The layout uses a BorderPane with:
+   - Top: Timer display
+   - Center: Game area (level, word, input, buttons, messages, progress bar)
+ The controller linked to this view is GameController.
+-->
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="controller.GameController">
+
+    <!-- Top section: Timer -->
     <top>
         <HBox spacing="10" alignment="CENTER_RIGHT">
             <padding>
@@ -14,13 +24,17 @@
         </HBox>
     </top>
 
+    <!-- Center section: Main game area -->
     <center>
         <VBox fx:id="centerBox" spacing="12.0" alignment="CENTER" prefWidth="900">
             <padding>
                 <Insets top="20" right="20" bottom="20" left="20"/>
             </padding>
+
+            <!-- Displays the current level -->
             <Label fx:id="lblLevel" text="Nivel: 1" styleClass="title-label"/>
 
+            <!-- Displays the word to be typed by the player -->
             <Label fx:id="lblWord"
                    text="Palabra"
                    styleClass="word-label"
@@ -30,16 +44,21 @@
                    alignment="CENTER"
                    textAlignment="CENTER"/>
 
+            <!-- Input field for the player -->
             <TextField fx:id="txtInput"
                        promptText="Escribe aquí exactamente la palabra mostrada"
                        maxWidth="600"/>
 
+            <!-- Action buttons -->
             <HBox spacing="10" alignment="CENTER">
                 <Button fx:id="btnValidate" text="Validar" onAction="#onValidateAction"/>
                 <Button fx:id="btnRestart" text="Reiniciar" onAction="#onRestartAction"/>
             </HBox>
 
+            <!-- Message label for feedback (success/error) -->
             <Label fx:id="lblMessage" text="" styleClass="message-label"/>
+
+            <!-- Progress bar for remaining time -->
             <ProgressBar fx:id="progress" prefWidth="400"/>
         </VBox>
     </center>
